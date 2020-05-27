@@ -1,4 +1,4 @@
-package com.example.fruitclassifion;
+package com.example.fruitclassification;
 
 import org.junit.Test;
 

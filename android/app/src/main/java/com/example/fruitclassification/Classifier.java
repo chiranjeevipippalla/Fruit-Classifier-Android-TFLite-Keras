@@ -1,4 +1,4 @@
-package com.example.fruitclassifion;
+package com.example.fruitclassification;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
@@ -16,14 +16,14 @@ public class Classifier {
     private final Interpreter interpreter;
     private final ByteBuffer inputImage;
 
-    private static final int DIM_BATCH_SIZE = 1;
-    public static final int DIM_IMG_SIZE_X = 50;
-    public static final int DIM_IMG_SIZE_Y = 50;
-    private static final int DIM_PIXEL_SIZE = 1;
+    private static final int DIM_BATCH_SIZE = 1; //batch size
+    public static final int DIM_IMG_SIZE_X = 50; //image width
+    public static final int DIM_IMG_SIZE_Y = 50; //image height
+    private static final int DIM_PIXEL_SIZE = 1; //image channels
 
     private final int[] imagePixels = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
-    private static final int CLASSES = 2;
-    private float[][] outputArray = new float[DIM_BATCH_SIZE][CLASSES];
+    private static final int CLASSES = 2; //fruit classes = final Dense layer neurons
+    private float[][] outputArray = new float[DIM_BATCH_SIZE][CLASSES]; //output probability array
 
     public Classifier(Activity activity) throws IOException {
         interpreter = new Interpreter(loadModelFile(activity));
@@ -37,6 +37,7 @@ public class Classifier {
         inputImage.order(ByteOrder.nativeOrder());
     }
 
+    //loads the .tflite file from assets folder
     private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
         AssetFileDescriptor fileDescriptor = activity.getAssets().openFd("fruits.tflite");
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
@@ -46,6 +47,7 @@ public class Classifier {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
+    //prime method where classification actually happens
     public int classify(Bitmap bitmap) {
         preprocess(bitmap);
         runInference();
@@ -56,6 +58,7 @@ public class Classifier {
         convertBitmapToByteBuffer(bitmap);
     }
 
+    //converting the bitmap image to bytebuffer
     private void convertBitmapToByteBuffer(Bitmap bitmap) {
         if (inputImage == null) {
             return;
@@ -72,6 +75,7 @@ public class Classifier {
         }
     }
 
+    //preprocess step of converting the image to grayscale
     private float convertToGreyScale(int color) {
         float r = ((color >> 16) & 0xFF);
         float g = ((color >> 8) & 0xFF);
@@ -82,10 +86,12 @@ public class Classifier {
         return preprocessedValue;
     }
 
+    //run methods takes the input image and the outputArray contains list of probabilities
     private void runInference() {
         interpreter.run(inputImage, outputArray);
     }
 
+    //postprocess returns the index with maximum probability in the output array
     private int postprocess() {
         int maxIndex = -1;
         float maxProb = 0.0f;

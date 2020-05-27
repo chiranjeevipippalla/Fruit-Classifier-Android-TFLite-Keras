@@ -1,4 +1,4 @@
-package com.example.fruitclassifion;
+package com.example.fruitclassification;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         resultTextView = findViewById(R.id.result);
 
+        //classify button
         classify_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 100);
             }
         });
+
+        //clear button
         clear_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 resultTextView.setText("0");
             }
         });
+
         try {
             classifier = new Classifier(this);
         } catch (IOException e) {
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
             Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            //scale the captured image into the dimensions of the keras model trained images size.
             Bitmap scaledBitmap = captureImage.createScaledBitmap(captureImage, 50, 50, false);
             int digit = classifier.classify(scaledBitmap);
             imageView.setImageBitmap(captureImage);
