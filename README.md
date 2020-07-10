@@ -13,7 +13,7 @@ https://github.com/margaretmz/E2E-tfKeras-TFLite-Android
 Some of the results:
 
 <h3>Apple</h3>
-<img src="https://github.com/chiranjeevipippalla/QuickFruit/blob/master/results/apple.jpg" width="200" height="400">
+<img src="https://github.com/chiranjeevipippalla/Fruit-Classifier-Android-TFLite-Keras/blob/master/apple.jpg" width="200" height="400">
 
 <h3>Banana</h3>
-<img src="https://github.com/chiranjeevipippalla/QuickFruit/blob/master/results/banana.jpg" width="200" height="400">
+<img src="https://github.com/chiranjeevipippalla/Fruit-Classifier-Android-TFLite-Keras/blob/master/banana.jpg" width="200" height="400">
